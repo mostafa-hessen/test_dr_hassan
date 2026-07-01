@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flutter Assignment — المهمة الكاملة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #07090f;
+      --surface: #0d1117;
+      --border: #1c2433;
+      --border2: #253044;
+      --text: #c9d1d9;
+      --muted: #8b949e;
+      --blue: #58a6ff;
+      --green: #3fb950;
+      --purple: #bc8cff;
+      --orange: #ffa657;
+      --red: #ff7b72;
+      --yellow: #e3b341;
+      --teal: #39d0d8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    code, pre, .mono { font-family: 'Fira Code', monospace; direction: ltr; text-align: left; }
+
+    /* syntax */
+    .kw  { color: #ff7b72; }
+    .fn  { color: #d2a8ff; }
+    .cl  { color: #79c0ff; }
+    .st  { color: #a5d6ff; }
+    .cm  { color: #8b949e; font-style: italic; }
+    .nm  { color: #ffa657; }
+    .tp  { color: #ffa657; }
+    .gr  { color: #3fb950; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .code-block {
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .code-header {
+      background: #0d1117;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; }
+    .code-body { padding: 16px 18px; overflow-x: auto; }
+    .code-body pre { font-size: 0.79rem; line-height: 1.85; white-space: pre; }
+
+    /* task card */
+    .task-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: border-color .25s, transform .2s;
+    }
+    .task-card:hover { transform: translateY(-2px); }
+
+    .task-header {
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .task-num {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1rem; flex-shrink: 0;
+    }
+
+    .task-body {
+      padding: 0 22px 20px 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 10px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700;
+    }
+
+    .req-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 14px;
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .check-circle {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--border2);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      margin-left: 10px;
+      margin-top: 1px;
+    }
+
+    .section-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 36px 0 24px;
+    }
+    .section-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border2), transparent);
+    }
+
+    /* progress */
+    .progress-bg {
+      background: var(--border);
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #58a6ff, #bc8cff);
+    }
+
+    /* file tree */
+    .tree-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 0;
+      font-size: 0.8rem;
+    }
+
+    /* timeline */
+    .timeline-item {
+      display: flex; gap: 14px; padding-bottom: 22px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      right: 17px; top: 36px;
+      width: 2px; bottom: 0;
+      background: var(--border);
+    }
+    .timeline-item:last-child::before { display: none; }
+    .tl-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      border: 2px solid var(--border2);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .5s ease both; }
+    .fade-up:nth-child(1) { animation-delay: .05s; }
+    .fade-up:nth-child(2) { animation-delay: .12s; }
+    .fade-up:nth-child(3) { animation-delay: .19s; }
+    .fade-up:nth-child(4) { animation-delay: .26s; }
+    .fade-up:nth-child(5) { animation-delay: .33s; }
+
+    .tag {
+      display: inline-block;
+      padding: 1px 8px; border-radius: 6px;
+      font-size: 0.72rem; font-weight: 700;
+      font-family: 'Fira Code', monospace;
+    }
+
+    .note-box {
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<header style="background:linear-gradient(180deg,#0d1117 0%,#07090f 100%);border-bottom:1px solid #1c2433;">
+  <div class="max-w-4xl mx-auto px-5 py-14 text-center">
+
+    <div class="flex justify-center gap-2 mb-5 flex-wrap">
+      <span class="badge" style="background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);color:#58a6ff;">Flutter</span>
+      <span class="badge" style="background:rgba(188,140,255,.1);border:1px solid rgba(188,140,255,.3);color:#bc8cff;">Provider</span>
+      <span class="badge" style="background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);color:#3fb950;">REST API</span>
+      <span class="badge" style="background:rgba(255,166,87,.1);border:1px solid rgba(255,166,87,.3);color:#ffa657;">Auth</span>
+    </div>
+
+    <h1 class="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+      المهمة العملية
+    </h1>
+    <p class="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed mb-8">
+      أكمل على التطبيق اللي بنيته من الصفر — وضيف ليه Authentication · API · Cart
+    </p>
+
+    <!-- progress overview -->
+    <div class="card inline-flex flex-wrap gap-6 px-8 py-5 mx-auto">
+      <div class="text-center">
+        <div class="text-3xl font-black text-white">4</div>
+        <div class="text-xs text-gray-500 mt-0.5">مهام</div>
+      </div>
+      <div style="width:1px;background:#1c2433;"></div>
+      <div class="text-center">
+        <div class="text-3xl font-black" style="color:#58a6ff;">3</div>
+        <div class="text-xs text-gray-500 mt-0.5">صفحات جديدة</div>
+      </div>
+      <div style="width:1px;background:#1c2433;"></div>
+      <div class="text-center">
+        <div class="text-3xl font-black" style="color:#3fb950;">4</div>
+        <div class="text-xs text-gray-500 mt-0.5">Packages</div>
+      </div>
+      <div style="width:1px;background:#1c2433;"></div>
+      <div class="text-center">
+        <div class="text-3xl font-black" style="color:#bc8cff;">∞</div>
+        <div class="text-xs text-gray-500 mt-0.5">تعلّم</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-4xl mx-auto px-4 py-12">
+
+  <!-- ══════════════════════════════════
+       STARTING POINT
+  ══════════════════════════════════ -->
+  <div class="note-box mb-10" style="background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.2);">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl">📌</span>
+      <div>
+        <p class="text-white font-bold mb-1">نقطة البداية — تطبيقك الحالي</p>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          أنت عندك تطبيق Flutter فيه <strong class="text-white">ApiService</strong> بيجيب posts من jsonplaceholder،
+          و <strong class="text-white">PostsScreen</strong> بيعرضها باستخدام setState أو FutureBuilder،
+          و <strong class="text-white">Post Model</strong> مع fromJson.<br/>
+          المهمة دي هتكملها بإضافة: <span style="color:#58a6ff;">Auth</span> · <span style="color:#3fb950;">Structured Services</span> · <span style="color:#bc8cff;">Cart with Provider</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       REQUIRED PACKAGES
+  ══════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="text-lg">📦</span>
+    <h2 class="text-lg font-black text-white whitespace-nowrap">Packages المطلوبة أولاً</h2>
+  </div>
+
+  <div class="card p-5 mb-10">
+    <div class="code-block">
+      <div class="code-header">
+        <div class="dot bg-red-500"></div><div class="dot bg-yellow-400"></div><div class="dot bg-green-400"></div>
+        <span class="text-gray-500 text-xs mr-auto mono">pubspec.yaml</span>
+      </div>
+      <div class="code-body">
+        <pre><span class="fn">dependencies</span>:
+  flutter:
+    sdk: flutter
+
+  <span class="cm"># HTTP requests</span>
+  <span class="cl">http</span>: <span class="st">^1.2.0</span>
+
+  <span class="cm"># State Management للـ Cart</span>
+  <span class="cl">provider</span>: <span class="st">^6.1.2</span>
+
+  <span class="cm"># حفظ بيانات الجلسة محلياً</span>
+  <span class="cl">shared_preferences</span>: <span class="st">^2.2.3</span></pre>
+      </div>
+    </div>
+    <p class="text-gray-500 text-xs mt-3 mono text-left">$ flutter pub get</p>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TASKS
+  ══════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="text-lg">🎯</span>
+    <h2 class="text-lg font-black text-white whitespace-nowrap">المهام — خطوة بخطوة</h2>
+  </div>
+
+  <div class="space-y-5">
+
+    <!-- ───────────── TASK 1: AUTH ───────────── -->
+    <div class="task-card fade-up" style="border-color:#1c3040;">
+      <div class="task-header" onclick="toggle('t1')">
+        <div class="task-num" style="background:rgba(88,166,255,.12);color:#58a6ff;border:1px solid rgba(88,166,255,.3);">1</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-white font-black text-base">التحقق من حالة تسجيل الدخول</h3>
+            <span class="badge" style="background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.25);color:#58a6ff;">Authentication</span>
+          </div>
+          <p class="text-gray-500 text-sm mt-0.5">SplashScreen تتحقق هل المستخدم مسجل دخول وتوجهه للصفحة الصح</p>
+        </div>
+        <span id="t1-arrow" class="text-gray-600 text-lg transition-transform" style="transform:rotate(0deg)">▼</span>
+      </div>
+
+      <div id="t1" class="task-body pt-5" style="display:none;">
+
+        <!-- what to do -->
+        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+          عند فتح التطبيق، لازم تتحقق هل المستخدم <strong class="text-white">مسجل دخوله</strong> أو لأ.
+          الـ <code class="text-blue-400 bg-gray-900 px-1 rounded text-xs">SharedPreferences</code> بتحفظ بيانات الجلسة محلياً على الجهاز.
+          لو مسجل → روّح لـ HomeScreen. لو مش مسجل → روّح لـ LoginScreen.
+        </p>
+
+        <!-- requirements -->
+        <div class="space-y-2 mb-5">
+          <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">المطلوب منك:</p>
+          <div class="req-item flex items-start">
+            <div class="check-circle"><span class="text-gray-700 text-xs">✓</span></div>
+            <div class="flex-1">
+              <p class="text-sm text-gray-300">اعمل <strong class="text-white">SplashScreen</strong> تظهر لثانيتين وهي بتتحقق</p>
+            </div>
+          </div>
+          <div class="req-item flex items-start">
+            <div class="check-circle"></div>
+            <div class="flex-1">
+              <p class="text-sm text-gray-300">اعمل <strong class="text-white">LoginScreen</strong> بـ email + password</p>
+            </div>
+          </div>
+          <div class="req-item flex items-start">
+            <div class="check-circle"></div>
+            <div class="flex-1">
+              <p class="text-sm text-gray-300">لو Login نجح، احفظ بيانات الجلسة في SharedPreferences</p>
+            </div>
+          </div>
+          <div class="req-item flex items-start">
+            <div class="check-circle"></div>
+            <div class="flex-1">
+              <p class="text-sm text-gray-300">اعمل <strong class="text-white">AuthService</strong> منفصل يتعامل مع كل حاجة تخص الـ Auth</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────────── TASK 2: FUTUREBUILDER + API ───────────── -->
+    <div class="task-card fade-up" style="border-color:#1e2a1a;">
+      <div class="task-header" onclick="toggle('t2')">
+        <div class="task-num" style="background:rgba(63,185,80,.12);color:#3fb950;border:1px solid rgba(63,185,80,.3);">2</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-white font-black text-base">FutureBuilder + Structured Services</h3>
+            <span class="badge" style="background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.25);color:#3fb950;">API</span>
+            <span class="badge" style="background:rgba(57,208,216,.1);border:1px solid rgba(57,208,216,.25);color:#39d0d8;">Services</span>
+          </div>
+          <p class="text-gray-500 text-sm mt-0.5">اعمل service منفصل لكل resource واستخدم FutureBuilder لعرض البيانات</p>
+        </div>
+        <span id="t2-arrow" class="text-gray-600 text-lg transition-transform">▼</span>
+      </div>
+
+      <div id="t2" class="task-body pt-5" style="display:none;">
+        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+          بدل ما يبقى كل الكود في الـ Screen، هتفصل الـ logic في <strong class="text-white">Service classes</strong> منظمة.
+          كل Service مسؤولة عن resource معين. وهتستخدم <strong class="text-white">أي API مناسب لتطبيقك</strong> —
+          سواء كانت fakestoreapi كمثال، أو أي API تاني بتاع مشروعك.
+        </p>
+      </div>
+    </div>
+
+    <!-- ───────────── TASK 3: LOGOUT ───────────── -->
+    <div class="task-card fade-up" style="border-color:#2a1a1a;">
+      <div class="task-header" onclick="toggle('t3')">
+        <div class="task-num" style="background:rgba(255,123,114,.12);color:#ff7b72;border:1px solid rgba(255,123,114,.3);">3</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-white font-black text-base">وظيفة الـ Logout</h3>
+            <span class="badge" style="background:rgba(255,123,114,.1);border:1px solid rgba(255,123,114,.25);color:#ff7b72;">Auth</span>
+          </div>
+          <p class="text-gray-500 text-sm mt-0.5">امسح بيانات الجلسة وروّح لـ LoginScreen</p>
+        </div>
+        <span id="t3-arrow" class="text-gray-600 text-lg">▼</span>
+      </div>
+
+      <div id="t3" class="task-body pt-5" style="display:none;">
+        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+          الـ Logout مش بس إنك تروّح للـ LoginScreen — لازم تنظّف كل حاجة:
+          امسح بيانات الجلسة المحفوظة، وأبعد المستخدم للـ Login.
+        </p>
+
+        <div class="space-y-2 mb-5">
+          <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-2">المطلوب منك:</p>
+          <div class="req-item flex items-start">
+            <div class="check-circle"></div>
+            <p class="text-sm text-gray-300 flex-1">زر Logout في الـ AppBar أو الـ Drawer</p>
+          </div>
+          <div class="req-item flex items-start">
+            <div class="check-circle"></div>
+            <p class="text-sm text-gray-300 flex-1">امسح بيانات الجلسة من SharedPreferences</p>
+          </div>
+          <div class="req-item flex items-start">
+            <div class="check-circle"></div>
+            <p class="text-sm text-gray-300 flex-1">Navigator.pushNamedAndRemoveUntil → LoginScreen</p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- ───────────── TASK 4: PROVIDER + CART ───────────── -->
+    <div class="task-card fade-up" style="border-color:#2a1e30;">
+      <div class="task-header" onclick="toggle('t4')">
+        <div class="task-num" style="background:rgba(188,140,255,.12);color:#bc8cff;border:1px solid rgba(188,140,255,.3);">4</div>
+        <div class="flex-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <h3 class="text-white font-black text-base">Add to Cart باستخدام Provider</h3>
+            <span class="badge" style="background:rgba(188,140,255,.1);border:1px solid rgba(188,140,255,.25);color:#bc8cff;">Provider</span>
+            <span class="badge" style="background:rgba(255,166,87,.1);border:1px solid rgba(255,166,87,.25);color:#ffa657;">State</span>
+          </div>
+          <p class="text-gray-500 text-sm mt-0.5">CartProvider يحفظ المنتجات ويتشارك بين كل الصفحات</p>
+        </div>
+        <span id="t4-arrow" class="text-gray-600 text-lg">▼</span>
+      </div>
+
+      <div id="t4" class="task-body pt-5" style="display:none;">
+        <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+          الـ Provider بيخلي الـ Cart state متاح لكل الـ widgets في التطبيق.
+          ProductScreen تضيف، CartScreen تعرض، AppBar يبين العدد.
+        </p>
+
+
+      </div>
+    </div>
+
+  </div><!-- end tasks -->
+
+  <!-- ══════════════════════════════════
+       SUMMARY TIMELINE
+  ══════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="text-lg">🗺️</span>
+    <h2 class="text-lg font-black text-white whitespace-nowrap">خطة التنفيذ المقترحة</h2>
+  </div>
+
+  <div class="card p-6 mb-10">
+    <div class="timeline-item">
+      <div class="tl-dot" style="background:rgba(88,166,255,.1);border-color:rgba(88,166,255,.4);">🧱</div>
+      <div class="pt-1">
+        <p class="text-white font-bold text-sm">الخطوة 1 — الـ Models</p>
+        <p class="text-gray-500 text-sm mt-1">ابدأ بـ Product Model وCartItem Model مع fromJson</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot" style="background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.4);">🔐</div>
+      <div class="pt-1">
+        <p class="text-white font-bold text-sm">الخطوة 2 — AuthService</p>
+        <p class="text-gray-500 text-sm mt-1">login / logout / isLoggedIn مع SharedPreferences</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot" style="background:rgba(255,123,114,.1);border-color:rgba(255,123,114,.4);">📱</div>
+      <div class="pt-1">
+        <p class="text-white font-bold text-sm">الخطوة 3 — SplashScreen + LoginScreen</p>
+        <p class="text-gray-500 text-sm mt-1">التحقق من حالة تسجيل الدخول والـ routing الصح</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot" style="background:rgba(57,208,216,.1);border-color:rgba(57,208,216,.4);">🛒</div>
+      <div class="pt-1">
+        <p class="text-white font-bold text-sm">الخطوة 4 — CartProvider</p>
+        <p class="text-gray-500 text-sm mt-1">إنشاء Provider وتسجيله في main.dart</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot" style="background:rgba(188,140,255,.1);border-color:rgba(188,140,255,.4);">🌐</div>
+      <div class="pt-1">
+        <p class="text-white font-bold text-sm">الخطوة 5 — ProductService + ProductsScreen</p>
+        <p class="text-gray-500 text-sm mt-1">FutureBuilder يجيب منتجات من fakestoreapi</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-dot" style="background:rgba(227,179,65,.1);border-color:rgba(227,179,65,.4);">✅</div>
+      <div class="pt-1">
+        <p class="text-white font-bold text-sm">الخطوة 6 — ربط كل حاجة</p>
+        <p class="text-gray-500 text-sm mt-1">CartScreen + زر Logout + ربط الـ Navigation</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       TIPS
+  ══════════════════════════════════ -->
+  <div class="grid md:grid-cols-2 gap-4 mb-10">
+    <div class="note-box" style="background:rgba(63,185,80,.06);border:1px solid rgba(63,185,80,.2);">
+      <p class="text-white font-bold mb-1 text-sm">✅ نصيحة</p>
+      <p class="text-gray-400 text-sm">اتأكد إن الـ ChangeNotifierProvider موجود فوق الـ MaterialApp في main.dart — لو حطيته تحت مش هيشتغل</p>
+    </div>
+    <div class="note-box" style="background:rgba(255,166,87,.06);border:1px solid rgba(255,166,87,.2);">
+      <p class="text-white font-bold mb-1 text-sm">⚠️ تنبيه</p>
+      <p class="text-gray-400 text-sm">استخدم <code class="text-orange-400 text-xs">context.read()</code> جوه الـ callbacks، و<code class="text-orange-400 text-xs">context.watch()</code> جوه الـ build method بس</p>
+    </div>
+    <div class="note-box" style="background:rgba(88,166,255,.06);border:1px solid rgba(88,166,255,.2);">
+      <p class="text-white font-bold mb-1 text-sm">💡 للاختبار</p>
+      <p class="text-gray-400 text-sm">استخدم أي API مناسب لتطبيقك — fakestoreapi مثال جيد للبداية لأنها مجانية ومفيهاش authentication</p>
+    </div>
+    <div class="note-box" style="background:rgba(188,140,255,.06);border:1px solid rgba(188,140,255,.2);">
+      <p class="text-white font-bold mb-1 text-sm">🔥 Bonus</p>
+      <p class="text-gray-400 text-sm">لو خلصت بكري، جرب تضيف زيادة وتقليل الكمية في الـ Cart باستخدام incrementQuantity / decrementQuantity</p>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="text-center py-8 border-t" style="border-color:#1c2433;">
+    <p class="text-gray-600 text-sm">Flutter Assignment — أكمل على تطبيقك</p>
+    <p class="text-gray-700 text-xs mt-1 mono">fakestoreapi.com · jsonplaceholder.typicode.com</p>
+  </footer>
+
+</main>
+
+<script>
+function toggle(id) {
+  const body  = document.getElementById(id);
+  const arrow = document.getElementById(id + '-arrow');
+  const open  = body.style.display !== 'none';
+  body.style.display  = open ? 'none' : 'block';
+  arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+</script>
+</body>
+</html>
