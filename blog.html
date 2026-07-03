@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Dr. Hassan Muslim Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal: { 900: '#042a2e', 800: '#07444b', 700: '#0d6b74', 600: '#0e8a96', 500: '#12a8b8', 400: '#40c4d2', 100: '#d0f2f5', 50: '#f0fbfc' },
+            gold: { 700: '#b5821e', 600: '#C4962A', 500: '#d4aa44', 400: '#E8C55A', 100: '#f7e9be' },
+            neutral: { 900: '#0b1f24', 700: '#3d6068', 500: '#7a9da5', 200: '#cde4e7', 50: '#f4fafb' }
+          },
+          fontFamily: { display: ['Poppins', 'sans-serif'], body: ['"Plus Jakarta Sans"', 'sans-serif'], arabic: ['Amiri', 'serif'] },
+          backgroundImage: {
+            'decorative-pattern': "url('assets/d0044c45-1a42-46be-8d08-3706f99f09c7.png')",
+          },
+          boxShadow: {
+            'soft': '0 20px 40px -15px rgba(4, 42, 46, 0.05)',
+            'glow': '0 0 20px rgba(196, 150, 42, 0.3)',
+            'card': '0 4px 20px rgba(4, 42, 46, 0.08)',
+            'card-hover': '0 12px 40px rgba(4, 42, 46, 0.12)',
+            'glow-gold': '0 0 30px rgba(196, 150, 42, 0.25)',
+          },
+          borderRadius: { 'card': '16px', 'card-lg': '24px', 'pill': '9999px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Poppins', sans-serif; }
+    .font-arabic { font-family: 'Amiri', serif; }
+    html { scroll-behavior: smooth; }
+    .arch-mask { border-top-left-radius: 9999px; border-top-right-radius: 9999px; overflow: hidden; }
+    .card-lift { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-lift:hover { transform: translateY(-6px); box-shadow: 0 16px 32px -8px rgba(4, 42, 46, 0.12); }
+    .btn-gold { background: linear-gradient(135deg, #C4962A, #E8C55A); color: #042a2e; transition: all 0.3s ease; position: relative; }
+    .btn-gold::after { content: ''; position: absolute; inset: -3px; border-radius: 9999px; background: linear-gradient(135deg, #C4962A, #E8C55A, #C4962A); z-index: -1; opacity: 0; transition: opacity 0.3s ease; }
+    .btn-gold:hover { box-shadow: 0 10px 24px -5px rgba(196, 150, 42, 0.45); transform: translateY(-2px); }
+    .btn-gold:hover::after { opacity: 0.4; }
+    .btn-gold:active { transform: translateY(0); }
+    @keyframes btn-glow { 0%, 100% { box-shadow: 0 0 8px rgba(196,150,42,0.3); } 50% { box-shadow: 0 0 20px rgba(196,150,42,0.6); } }
+    .btn-gold.btn-notify { animation: btn-glow 2s ease-in-out infinite; }
+    .btn-outline { border: 2px solid #0d6b74; color: #0d6b74; transition: all 0.3s ease; }
+    .btn-outline:hover { background: #0d6b74; color: #ffffff; box-shadow: 0 4px 12px rgba(13, 107, 116, 0.3); }
+    @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+    .bg-decorative { background-image: url('assets/d0044c45-1a42-46be-8d08-3706f99f09c7.png'); background-repeat: no-repeat; background-position: center; background-size: cover; }
+    .reveal-left, .reveal-right { opacity: 0; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .reveal-left { transform: translateX(-60px); }
+    .reveal-right { transform: translateX(60px); }
+    .reveal-left.revealed, .reveal-right.revealed { opacity: 1; transform: translateX(0); }
+    .mobile-menu-open { overflow: hidden; }
+    .section-glow { position: relative; }
+    .section-glow::after { content: ''; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%); width: 200px; height: 2px; background: linear-gradient(90deg, transparent, #C4962A, transparent); opacity: 0.3; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up-in { opacity: 0; }
+    .fade-up-in.revealed { animation: fadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+    .shimmer-gold { background: linear-gradient(110deg, #C4962A 30%, #E8C55A 50%, #C4962A 70%); background-size: 200% 100%; animation: shimmer 3s ease-in-out infinite; }
+    @keyframes float-slow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .float-slow { animation: float-slow 4s ease-in-out infinite; }
+    .glass-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.12); }
+    .glass-card:hover { background: rgba(255,255,255,0.14); border-color: rgba(196,150,42,0.3); }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+    .scale-in { opacity: 0; }
+    .scale-in.revealed { animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    @keyframes springUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .spring-up { opacity: 0; }
+    .spring-up.revealed { animation: springUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .whatsapp-fab { position: fixed; bottom: 24px; right: 24px; z-index: 999; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .whatsapp-fab:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5); }
+    .whatsapp-fab:active { transform: scale(0.95); }
+    @keyframes fab-appear { from { opacity: 0; transform: scale(0) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    @keyframes fab-pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); } 50% { box-shadow: 0 4px 30px rgba(37, 211, 102, 0.7); } }
+    .whatsapp-fab { animation: fab-appear 0.6s 1s both, fab-pulse 2s 1.6s infinite; }
+    .img-zoom { overflow: hidden; }
+    .img-zoom img { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .img-zoom:hover img { transform: scale(1.05); }
+    .link-underline { position: relative; }
+    .link-underline::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #C4962A; transition: width 0.3s ease; }
+    .link-underline:hover::after { width: 100%; }
+    .cursor-islamic { position: fixed; width: 28px; height: 28px; pointer-events: none; z-index: 99999; will-change: transform; opacity: 0; transition: opacity 0.25s ease; background: #E8C55A; border-radius: 50%; box-shadow: 0 0 12px rgba(200,155,50,0.5); margin: -14px 0 0 -14px; }
+    .cursor-islamic.visible { opacity: 0.85; }
+    @media (hover: none) { .cursor-islamic { display: none !important; } }
+    .hover-lift { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease; }
+    .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 28px -8px rgba(4, 42, 46, 0.15); }
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .blog-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .blog-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px -8px rgba(4, 42, 46, 0.12); }
+    .blog-card .blog-thumb img { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .blog-card:hover .blog-thumb img { transform: scale(1.05); }
+    .category-tag { transition: all 0.3s ease; }
+    .category-tag:hover { background: #C4962A; color: #042a2e; border-color: #C4962A; }
+    .category-tag.active { background: #C4962A; color: #042a2e; border-color: #C4962A; }
+    .pagination-btn { transition: all 0.3s ease; }
+    .pagination-btn:hover { background: #C4962A; color: #042a2e; border-color: #C4962A; }
+    .pagination-btn.active { background: #C4962A; color: #042a2e; border-color: #C4962A; }
+    .sidebar-widget { transition: all 0.3s ease; }
+    .sidebar-widget:hover { border-color: rgba(196, 150, 42, 0.3); }
+  </style>
+</head>
+<body class="text-neutral-900 bg-neutral-50 relative">
+
+  <!-- ================= HEADER ================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-neutral-900/95 backdrop-blur-md shadow-md border-b border-neutral-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="hassan-academy.html" class="flex items-center gap-3">
+          <span class="inline-flex items-center justify-center w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-white/10 backdrop-blur border border-white/20 p-1.5">
+            <img src="../brand/brand/1 (2).png" alt="Dr. Hassan Muslim Institute Logo" class="h-full w-full object-contain">
+          </span>
+          <div class="flex flex-col">
+            <span class="font-display font-bold text-lg lg:text-xl text-white leading-none">Dr. Hassan <span class="text-gold-400">Muslim Institute</span></span>
+          </div>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 lg:gap-8">
+          <a href="hassan-academy.html" class="text-sm font-semibold text-neutral-300 hover:text-gold-400 transition-colors link-underline">Home</a>
+          <a href="courses.html" class="text-sm font-semibold text-neutral-300 hover:text-gold-400 transition-colors link-underline">Courses</a>
+          <a href="teachers.html" class="text-sm font-semibold text-neutral-300 hover:text-gold-400 transition-colors link-underline">Teachers</a>
+          <a href="pricing.html" class="text-sm font-semibold text-neutral-300 hover:text-gold-400 transition-colors link-underline">Pricing</a>
+          <a href="blog.html" class="text-sm font-semibold text-gold-400 transition-colors link-underline">Blog</a>
+          <a href="contact.html" class="text-sm font-semibold text-neutral-300 hover:text-gold-400 transition-colors link-underline">Contact</a>
+        </nav>
+        <div class="hidden md:flex items-center gap-3">
+          <a href="hassan-academy.html#enroll" class="btn-gold btn-notify font-display font-semibold text-sm px-5 lg:px-6 py-2.5 lg:py-3 rounded-full relative">
+            Start Free Trial
+            <span class="absolute -top-1 -right-1 w-3 h-3">
+              <span class="absolute inset-0 rounded-full bg-gold-400 animate-ping opacity-75"></span>
+              <span class="absolute inset-0.5 rounded-full bg-gold-300"></span>
+            </span>
+          </a>
+        </div>
+        <button id="menu-btn" onclick="toggleMobileMenu()" class="md:hidden relative w-10 h-10 flex items-center justify-center text-white" aria-label="Toggle menu">
+          <svg id="menu-icon-open" class="w-6 h-6 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+          <svg id="menu-icon-close" class="w-6 h-6 hidden transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden bg-neutral-900 border-t border-neutral-800 shadow-2xl">
+      <div class="px-4 py-6 space-y-1">
+        <a href="hassan-academy.html" class="block px-4 py-3 text-neutral-300 font-semibold rounded-xl hover:bg-white/5 hover:text-gold-400 transition-all">Home</a>
+        <a href="courses.html" class="block px-4 py-3 text-neutral-300 font-semibold rounded-xl hover:bg-white/5 hover:text-gold-400 transition-all">Courses</a>
+        <a href="teachers.html" class="block px-4 py-3 text-neutral-300 font-semibold rounded-xl hover:bg-white/5 hover:text-gold-400 transition-all">Teachers</a>
+        <a href="pricing.html" class="block px-4 py-3 text-neutral-300 font-semibold rounded-xl hover:bg-white/5 hover:text-gold-400 transition-all">Pricing</a>
+        <a href="blog.html" class="block px-4 py-3 text-gold-400 font-semibold rounded-xl hover:bg-white/5 transition-all">Blog</a>
+        <a href="contact.html" class="block px-4 py-3 text-neutral-300 font-semibold rounded-xl hover:bg-white/5 hover:text-gold-400 transition-all">Contact</a>
+        <div class="pt-4 px-4">
+          <a href="hassan-academy.html#enroll" class="btn-gold font-display font-semibold text-sm w-full inline-block text-center px-6 py-3 rounded-full relative">
+            Start Free Trial
+            <span class="absolute -top-1 -right-1 w-3 h-3">
+              <span class="absolute inset-0 rounded-full bg-gold-400 animate-ping opacity-75"></span>
+              <span class="absolute inset-0.5 rounded-full bg-gold-300"></span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="h-20"></div>
+
+  <!-- ================= BLOG HERO ================= -->
+  <section class="relative overflow-hidden py-16 lg:py-24" style="background: linear-gradient(135deg, #042a2e, #07444b);">
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 30% 50%, #d4aa44 0%, transparent 60%), radial-gradient(circle at 70% 30%, #d4aa44 0%, transparent 40%);"></div>
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-500 to-transparent opacity-30"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 bg-teal-800/60 border border-teal-600/30 text-teal-100 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6 reveal">
+          <span class="w-2 h-2 rounded-full bg-gold-500 animate-pulse"></span>
+          Our Journal
+        </div>
+        <h1 class="font-display font-bold text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6 reveal">
+          Insights & <span class="text-gold-400">Inspiration</span>
+        </h1>
+        <p class="text-teal-100 text-lg leading-relaxed max-w-2xl mx-auto reveal">
+          Discover articles, guides, and reflections on Islamic education, Quran memorization techniques, parenting tips, and more from the Dr. Hassan Muslim Academy team.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BLOG CONTENT ================= -->
+  <section class="py-16 lg:py-24 bg-neutral-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-12">
+
+          <!-- Featured Post -->
+          <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+            <div class="blog-thumb overflow-hidden aspect-[16/9] lg:aspect-[21/9] relative">
+              <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/60 to-transparent z-10"></div>
+              <img src="assets/blog/Gemini_Generated_Image_5gjuww5gjuww5gju.png" alt="The Art of Quran Memorization" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              <div class="absolute bottom-4 left-4 z-20 flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-gold-500/20 backdrop-blur border border-gold-500/30 text-gold-400 text-xs font-semibold">Featured</span>
+                <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-white/80 text-xs">Quran</span>
+              </div>
+            </div>
+            <div class="p-6 lg:p-8">
+              <div class="flex items-center gap-4 text-sm text-neutral-500 mb-4">
+                <span>Mar 15, 2026</span>
+                <span class="w-1 h-1 rounded-full bg-neutral-300"></span>
+                <span>8 min read</span>
+                <span class="w-1 h-1 rounded-full bg-neutral-300"></span>
+                <span>By Dr. Hassan Muslim</span>
+              </div>
+              <h2 class="font-display font-bold text-2xl lg:text-3xl text-neutral-900 mb-4 leading-tight">
+                <a href="#" class="hover:text-gold-600 transition-colors">The Art of Quran Memorization: A Modern Guide for Students</a>
+              </h2>
+              <p class="text-neutral-600 leading-relaxed mb-6">
+                Discover proven techniques and timeless wisdom for memorizing the Quran effectively. From time management to spiritual preparation, this comprehensive guide covers everything you need to embark on your hifdh journey with confidence.
+              </p>
+              <a href="#" class="inline-flex items-center gap-2 text-gold-600 font-semibold text-sm hover:gap-3 transition-all">
+                Read Full Article
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- Post Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+              <div class="blog-thumb overflow-hidden aspect-[4/3]">
+                <img src="assets/blog/Gemini_Generated_Image_k6h0vak6h0vak6h0.png" alt="Islamic Parenting" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-medium">Parenting</span>
+                </div>
+                <p class="text-xs text-neutral-400 mb-2">Feb 28, 2026 &middot; 5 min read</p>
+                <h3 class="font-display font-bold text-lg text-neutral-900 mb-2 leading-snug">
+                  <a href="#" class="hover:text-gold-600 transition-colors">Raising Righteous Children in a Digital Age</a>
+                </h3>
+                <p class="text-neutral-600 text-sm leading-relaxed">Practical advice for Muslim parents navigating technology, education, and Islamic values in today's fast-paced world.</p>
+              </div>
+            </article>
+
+            <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+              <div class="blog-thumb overflow-hidden aspect-[4/3]">
+                <img src="assets/blog/Gemini_Generated_Image_oaqa7uoaqa7uoaqa.png" alt="Tajweed Rules" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-medium">Tajweed</span>
+                </div>
+                <p class="text-xs text-neutral-400 mb-2">Feb 14, 2026 &middot; 6 min read</p>
+                <h3 class="font-display font-bold text-lg text-neutral-900 mb-2 leading-snug">
+                  <a href="#" class="hover:text-gold-600 transition-colors">Mastering Tajweed: Common Mistakes and How to Fix Them</a>
+                </h3>
+                <p class="text-neutral-600 text-sm leading-relaxed">A detailed breakdown of the most common tajweed errors students make and practical exercises to correct them.</p>
+              </div>
+            </article>
+
+            <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+              <div class="blog-thumb overflow-hidden aspect-[4/3]">
+                <img src="assets/blog/Gemini_Generated_Image_sebgthsebgthsebg.png" alt="Online Learning" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-medium">Education</span>
+                </div>
+                <p class="text-xs text-neutral-400 mb-2">Jan 30, 2026 &middot; 4 min read</p>
+                <h3 class="font-display font-bold text-lg text-neutral-900 mb-2 leading-snug">
+                  <a href="#" class="hover:text-gold-600 transition-colors">Why Online Quran Classes Are More Effective Than Ever</a>
+                </h3>
+                <p class="text-neutral-600 text-sm leading-relaxed">How one-on-one online learning is transforming Islamic education with personalized attention and flexible scheduling.</p>
+              </div>
+            </article>
+
+            <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+              <div class="blog-thumb overflow-hidden aspect-[4/3]">
+                <img src="assets/blog/Gemini_Generated_Image_tbit4mtbit4mtbit.png" alt="Dua and Reflection" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-medium">Spirituality</span>
+                </div>
+                <p class="text-xs text-neutral-400 mb-2">Jan 15, 2026 &middot; 7 min read</p>
+                <h3 class="font-display font-bold text-lg text-neutral-900 mb-2 leading-snug">
+                  <a href="#" class="hover:text-gold-600 transition-colors">The Power of Du'a: Strengthening Your Connection with Allah</a>
+                </h3>
+                <p class="text-neutral-600 text-sm leading-relaxed">Explore the spiritual significance of supplication and learn how to make du'a a consistent and meaningful part of your daily life.</p>
+              </div>
+            </article>
+
+            <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+              <div class="blog-thumb overflow-hidden aspect-[4/3]">
+                <img src="assets/blog/Gemini_Generated_Image_5gjuww5gjuww5gju.png" alt="Children Learning" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-medium">Children</span>
+                </div>
+                <p class="text-xs text-neutral-400 mb-2">Dec 20, 2025 &middot; 5 min read</p>
+                <h3 class="font-display font-bold text-lg text-neutral-900 mb-2 leading-snug">
+                  <a href="#" class="hover:text-gold-600 transition-colors">How to Make Quran Learning Fun for Your Child</a>
+                </h3>
+                <p class="text-neutral-600 text-sm leading-relaxed">Creative strategies and activities to help your child develop a love for the Quran from an early age.</p>
+              </div>
+            </article>
+
+            <article class="blog-card bg-white rounded-card overflow-hidden shadow-card hover:shadow-card-hover reveal">
+              <div class="blog-thumb overflow-hidden aspect-[4/3]">
+                <img src="assets/blog/Gemini_Generated_Image_k6h0vak6h0vak6h0.png" alt="Ramadan Prep" class="w-full h-full object-cover" onerror="this.style.display='none'">
+              </div>
+              <div class="p-5">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-xs font-medium">Ramadan</span>
+                </div>
+                <p class="text-xs text-neutral-400 mb-2">Dec 5, 2025 &middot; 6 min read</p>
+                <h3 class="font-display font-bold text-lg text-neutral-900 mb-2 leading-snug">
+                  <a href="#" class="hover:text-gold-600 transition-colors">Preparing for Ramadan: A Quran-Centric Approach</a>
+                </h3>
+                <p class="text-neutral-600 text-sm leading-relaxed">Plan your Ramadan with the Quran at the center. Tips for goal-setting, scheduling, and making the most of every blessed moment.</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Pagination -->
+          <div class="flex items-center justify-center gap-2 pt-4 reveal">
+            <button class="pagination-btn w-10 h-10 rounded-lg border border-neutral-200 flex items-center justify-center text-neutral-500 bg-white cursor-pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="pagination-btn active w-10 h-10 rounded-lg border border-gold-500 flex items-center justify-center text-sm font-semibold cursor-pointer">1</button>
+            <button class="pagination-btn w-10 h-10 rounded-lg border border-neutral-200 flex items-center justify-center text-sm text-neutral-600 bg-white hover:border-gold-500 cursor-pointer">2</button>
+            <button class="pagination-btn w-10 h-10 rounded-lg border border-neutral-200 flex items-center justify-center text-sm text-neutral-600 bg-white hover:border-gold-500 cursor-pointer">3</button>
+            <span class="px-1 text-neutral-400">...</span>
+            <button class="pagination-btn w-10 h-10 rounded-lg border border-neutral-200 flex items-center justify-center text-sm text-neutral-600 bg-white hover:border-gold-500 cursor-pointer">8</button>
+            <button class="pagination-btn w-10 h-10 rounded-lg border border-neutral-200 flex items-center justify-center text-neutral-500 bg-white cursor-pointer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-8">
+
+          <!-- Search -->
+          <div class="bg-white rounded-card overflow-hidden shadow-card sidebar-widget border border-neutral-100 p-5 reveal">
+            <h3 class="font-display font-bold text-lg text-neutral-900 mb-4">Search</h3>
+            <div class="relative">
+              <input type="text" placeholder="Search articles..." class="w-full px-4 py-3 rounded-xl border border-neutral-200 bg-neutral-50 text-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400/30 focus:border-gold-400 transition-all">
+              <button class="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-lg bg-gold-500 flex items-center justify-center hover:bg-gold-600 transition-colors cursor-pointer">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#042a2e" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Categories -->
+          <div class="bg-white rounded-card overflow-hidden shadow-card sidebar-widget border border-neutral-100 p-5 reveal">
+            <h3 class="font-display font-bold text-lg text-neutral-900 mb-4">Categories</h3>
+            <ul class="space-y-2">
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Quran Memorization <span class="text-xs text-neutral-400">(12)</span></a></li>
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Tajweed <span class="text-xs text-neutral-400">(8)</span></a></li>
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Parenting <span class="text-xs text-neutral-400">(6)</span></a></li>
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Islamic Studies <span class="text-xs text-neutral-400">(9)</span></a></li>
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Arabic Language <span class="text-xs text-neutral-400">(5)</span></a></li>
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Spirituality <span class="text-xs text-neutral-400">(7)</span></a></li>
+              <li><a href="#" class="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm text-neutral-600 hover:bg-teal-50 hover:text-teal-800 transition-all">Ramadan <span class="text-xs text-neutral-400">(4)</span></a></li>
+            </ul>
+          </div>
+
+          <!-- Recent Posts -->
+          <div class="bg-white rounded-card overflow-hidden shadow-card sidebar-widget border border-neutral-100 p-5 reveal">
+            <h3 class="font-display font-bold text-lg text-neutral-900 mb-4">Recent Posts</h3>
+            <ul class="space-y-4">
+              <li><a href="#" class="flex items-start gap-3 group">
+                <div class="w-14 h-14 rounded-xl bg-neutral-100 flex-shrink-0 overflow-hidden">
+                  <div class="w-full h-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-teal-600 font-display font-bold text-sm">QM</div>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-neutral-900 group-hover:text-gold-600 transition-colors leading-snug">The Art of Quran Memorization</p>
+                  <p class="text-xs text-neutral-400 mt-0.5">Mar 15, 2026</p>
+                </div>
+              </a></li>
+              <li><a href="#" class="flex items-start gap-3 group">
+                <div class="w-14 h-14 rounded-xl bg-neutral-100 flex-shrink-0 overflow-hidden">
+                  <div class="w-full h-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-teal-600 font-display font-bold text-sm">RP</div>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-neutral-900 group-hover:text-gold-600 transition-colors leading-snug">Raising Righteous Children</p>
+                  <p class="text-xs text-neutral-400 mt-0.5">Feb 28, 2026</p>
+                </div>
+              </a></li>
+              <li><a href="#" class="flex items-start gap-3 group">
+                <div class="w-14 h-14 rounded-xl bg-neutral-100 flex-shrink-0 overflow-hidden">
+                  <div class="w-full h-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-teal-600 font-display font-bold text-sm">MT</div>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-neutral-900 group-hover:text-gold-600 transition-colors leading-snug">Mastering Tajweed</p>
+                  <p class="text-xs text-neutral-400 mt-0.5">Feb 14, 2026</p>
+                </div>
+              </a></li>
+              <li><a href="#" class="flex items-start gap-3 group">
+                <div class="w-14 h-14 rounded-xl bg-neutral-100 flex-shrink-0 overflow-hidden">
+                  <div class="w-full h-full bg-gradient-to-br from-teal-100 to-teal-200 flex items-center justify-center text-teal-600 font-display font-bold text-sm">OL</div>
+                </div>
+                <div>
+                  <p class="text-sm font-semibold text-neutral-900 group-hover:text-gold-600 transition-colors leading-snug">Why Online Classes Work</p>
+                  <p class="text-xs text-neutral-400 mt-0.5">Jan 30, 2026</p>
+                </div>
+              </a></li>
+            </ul>
+          </div>
+
+          <!-- Tags -->
+          <div class="bg-white rounded-card overflow-hidden shadow-card sidebar-widget border border-neutral-100 p-5 reveal">
+            <h3 class="font-display font-bold text-lg text-neutral-900 mb-4">Popular Tags</h3>
+            <div class="flex flex-wrap gap-2">
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Quran</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Tajweed</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Hifdh</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Parenting</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Du'a</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Ramadan</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Children</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Online Learning</a>
+              <a href="#" class="category-tag px-3 py-1.5 rounded-full border border-neutral-200 text-xs font-medium text-neutral-600 bg-white">Arabic</a>
+            </div>
+          </div>
+
+          <!-- Newsletter CTA -->
+          <div class="rounded-card overflow-hidden reveal" style="background: linear-gradient(135deg, #042a2e, #07444b);">
+            <div class="p-6 text-center">
+              <div class="w-12 h-12 rounded-full bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8C55A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <h3 class="font-display font-bold text-white text-lg mb-2">Stay Inspired</h3>
+              <p class="text-teal-100/70 text-sm mb-4">Get the latest articles and resources delivered to your inbox.</p>
+              <input type="email" placeholder="Your email address" class="w-full px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white text-sm placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-gold-400/30 mb-3">
+              <button class="btn-gold font-display font-semibold text-sm w-full px-6 py-2.5 rounded-full cursor-pointer">Subscribe</button>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NEWSLETTER SECTION ================= -->
+  <section class="py-16 lg:py-20 relative overflow-hidden" style="background: linear-gradient(135deg, #042a2e 0%, #07444b 50%, #0d6b74 100%);">
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 30% 50%, #d4aa44 0%, transparent 60%), radial-gradient(circle at 70% 30%, #d4aa44 0%, transparent 40%);"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="font-display font-bold text-3xl lg:text-4xl text-white mb-4 reveal">Join Our <span class="text-gold-400">Community</span></h2>
+        <p class="text-teal-200/80 mb-8 reveal">Subscribe to the Dr. Hassan Muslim Academy newsletter and receive weekly insights, Quran tips, and exclusive content.</p>
+        <div class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto reveal">
+          <input type="email" placeholder="Enter your email" class="flex-1 px-5 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400/30">
+          <button class="btn-gold font-display font-semibold text-sm px-8 py-3 rounded-full flex-shrink-0 cursor-pointer">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-neutral-900 pt-16 pb-8 border-t-4 border-teal-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1 md:col-span-1">
+          <a href="hassan-academy.html" class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-full bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center p-1.5">
+              <img src="../brand/brand/1 (2).png" alt="Logo" class="h-full w-full object-contain">
+            </div>
+            <span class="font-display font-bold text-xl text-white">Dr. Hassan <span class="text-gold-500">Muslim Academy</span></span>
+          </a>
+          <p class="text-neutral-400 text-sm leading-relaxed">Providing high-quality, authentic Islamic education to families around the globe through personalized online classes.</p>
+        </div>
+        <div>
+          <h4 class="font-display font-bold text-white mb-6 uppercase tracking-wider text-sm">Quick Links</h4>
+          <ul class="space-y-3">
+            <li><a href="hassan-academy.html" class="text-neutral-400 hover:text-gold-400 transition-colors">Home</a></li>
+            <li><a href="hassan-academy.html#about" class="text-neutral-400 hover:text-gold-400 transition-colors">About Us</a></li>
+            <li><a href="courses.html" class="text-neutral-400 hover:text-gold-400 transition-colors">Courses</a></li>
+            <li><a href="pricing.html" class="text-neutral-400 hover:text-gold-400 transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display font-bold text-white mb-6 uppercase tracking-wider text-sm">Support</h4>
+          <ul class="space-y-3">
+            <li><a href="hassan-academy.html#faq" class="text-neutral-400 hover:text-gold-400 transition-colors">FAQ</a></li>
+            <li><a href="contact.html" class="text-neutral-400 hover:text-gold-400 transition-colors">Contact Us</a></li>
+            <li><a href="#" class="text-neutral-400 hover:text-gold-400 transition-colors">Privacy Policy</a></li>
+            <li><a href="#" class="text-neutral-400 hover:text-gold-400 transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display font-bold text-white mb-6 uppercase tracking-wider text-sm">Contact</h4>
+          <ul class="space-y-3">
+            <li class="text-neutral-400 flex items-start gap-2">
+              <svg class="mt-1 flex-shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              support@hassanmusliminstitute.com
+            </li>
+            <li class="text-neutral-400 flex items-start gap-2">
+              <svg class="mt-1 flex-shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +1 (800) 123-4567
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-neutral-500 text-sm">&copy; 2026 Dr. Hassan Muslim Academy. All rights reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href="https://wa.me/+201108868489" target="_blank" rel="noopener" class="text-neutral-500 hover:text-white transition-colors" title="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://youtube.com/@Dr.HassanMuslim" target="_blank" rel="noopener" class="text-neutral-500 hover:text-white transition-colors" title="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://instagram.com/dr.hassanmuslim1" target="_blank" rel="noopener" class="text-neutral-500 hover:text-white transition-colors" title="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://facebook.com/dr.hassanmuslim1" target="_blank" rel="noopener" class="text-neutral-500 hover:text-white transition-colors" title="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://tiktok.com/@dr.hassanmuslim" target="_blank" rel="noopener" class="text-neutral-500 hover:text-white transition-colors" title="TikTok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/dr-hassanmuslim" target="_blank" rel="noopener" class="text-neutral-500 hover:text-white transition-colors" title="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile Menu Toggle -->
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const openIcon = document.getElementById('menu-icon-open');
+      const closeIcon = document.getElementById('menu-icon-close');
+      const isOpen = !menu.classList.contains('hidden');
+      menu.classList.toggle('hidden');
+      openIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+      document.body.classList.toggle('mobile-menu-open', !isOpen);
+    }
+    document.querySelectorAll('#mobile-menu a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (!document.getElementById('mobile-menu').classList.contains('hidden')) {
+          toggleMobileMenu();
+        }
+      });
+    });
+  </script>
+
+  <!-- Scroll Reveal Script -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal-left, .reveal-right, .fade-up-in, .scale-in, .spring-up, .reveal').forEach(el => observer.observe(el));
+  </script>
+
+  <!-- Custom Cursor - Islamic Pattern -->
+  <div class="cursor-islamic" id="cursorIslamic"></div>
+
+  <script>
+    (function(){
+      var c = document.getElementById('cursorIslamic');
+      if (!c) return;
+      var cx = -100, cy = -100, tx = -100, ty = -100, hideTimer;
+      c.style.left = '-100px';
+      c.style.top = '-100px';
+      function frame() {
+        cx += (tx - cx) * 0.12;
+        cy += (ty - cy) * 0.12;
+        c.style.left = cx + 'px';
+        c.style.top = cy + 'px';
+        requestAnimationFrame(frame);
+      }
+      document.addEventListener('mousemove', function(e) {
+        tx = e.clientX;
+        ty = e.clientY;
+        c.classList.add('visible');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function() { c.classList.remove('visible'); }, 2000);
+      });
+      document.addEventListener('mouseleave', function() { c.classList.remove('visible'); });
+      frame();
+    })();
+  </script>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/+201108868489" target="_blank" rel="noopener" class="whatsapp-fab" title="Chat with us on WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+</body>
+</html>
